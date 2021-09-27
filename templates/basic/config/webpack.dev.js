@@ -1,6 +1,7 @@
-import { merge } from 'webpack-merge';
-import { HotModuleReplacementPlugin } from 'webpack';
-import commonConfig from './webpack.common.js';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { default: merge } = require('webpack-merge');
+const { HotModuleReplacementPlugin } = require('webpack');
+const commonConfig = require('./webpack.common.js');
 
 /** @type {import('webpack').Configuration} * */
 const devConfig = {

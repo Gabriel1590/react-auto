@@ -1,5 +1,6 @@
-import { merge } from 'webpack-merge';
-import common from './webpack.common.js';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { default: merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
 
 /** @type {import('webpack').Configuration} * */
 const prodConfig = {
