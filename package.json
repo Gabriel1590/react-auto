@@ -13,7 +13,7 @@
     "cli"
   ],
   "author": "Gabriel Escorche",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "inquirer": "^8.1.5"
   }
