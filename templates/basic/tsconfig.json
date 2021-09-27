@@ -19,4 +19,4 @@
       // "checkJs": true /* Report errors in .js files. Works in tandem with allowJs. */,
     },
     "include": ["src/**/*"]
-  }
+}
