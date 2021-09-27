@@ -12,6 +12,7 @@ function createProject(answers) {
     fs.mkdirSync(destination);
 
     createDirectoryContents(templatePath, projectName);
+    updateProjectName(projectName, destination);
     downloadNodeModules(destination);
 }
 
@@ -41,10 +42,22 @@ function createDirectoryContents(templatePath, newProjectPath) {
     });
 }
 
-function updateProjectName(name) {
+function updateProjectName(name, destination) {
     // Package.json
+    const packageJsonPath = `${destination}/package.json`;
+    let packageJson = fs.readFileSync(packageJsonPath, 'utf8');
+    const [start, _, ...rest] = packageJson.split('\n');
+    packageJson = [start, `  "name": "${name}",`, ...rest].join('\n');
+
+    fs.unlinkSync(packageJsonPath);
+    fs.writeFileSync(packageJsonPath, packageJson);
     
     // index.html title
+    const publicIndexHtmlPath = `${destination}/public/index.html`;
+    const publicIndexHtml = fs.readFileSync(publicIndexHtmlPath, 'utf8');
+    
+    fs.unlinkSync(publicIndexHtmlPath);
+    fs.writeFileSync(publicIndexHtmlPath, publicIndexHtml.replace('%TITLE%', name.toUpperCase()));
 
 }
 
