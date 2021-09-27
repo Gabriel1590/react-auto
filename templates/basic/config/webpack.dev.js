@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { default: merge } = require('webpack-merge');
-const { HotModuleReplacementPlugin } = require('webpack');
 const commonConfig = require('./webpack.common.js');
 
 /** @type {import('webpack').Configuration} * */
@@ -13,9 +12,6 @@ const devConfig = {
     },
     hot: true,
   },
-  plugins: [
-    new HotModuleReplacementPlugin(),
-  ],
   target: 'web',
   devtool: 'eval-source-map',
 };
