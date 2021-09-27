@@ -1,11 +1,11 @@
-function App() {
+function App(): JSX.Element {
   return (
-    <div className="app">
+    <div>
       <h1>
-        hola React
+        Hello React
       </h1>
     </div>
-  )
+  );
 }
 
 export default App;
