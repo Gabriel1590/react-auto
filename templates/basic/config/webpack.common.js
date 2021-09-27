@@ -1,30 +1,29 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-/* eslint-disable */
 const path = require('path');
 
 const assetsRules = {
-  type: "asset",
-  test: /\.(png|svg|jpg|jpeg|gif)$/i
-}
+  type: 'asset',
+  test: /\.(png|svg|jpg|jpeg|gif)$/i,
+};
 
 const reactRules = {
-  use: "babel-loader",
+  use: 'babel-loader',
   test: /\.(ts|js)x?$/,
   exclude: /node_modules/,
-}
+};
 
-/** @type {import('webpack').Configuration} **/
+/** @type {import('webpack').Configuration} * */
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: './src/index.tsx',
   resolve: {
-    extensions: [".ts", ".tsx", ".json", ".js"]
+    extensions: ['.ts', '.tsx', '.json', '.js'],
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: "[name].[contenthash].js",
-    publicPath: ""
+    filename: '[name].[contenthash].js',
+    publicPath: '',
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -34,6 +33,6 @@ module.exports = {
     new CleanWebpackPlugin(),
   ],
   module: {
-    rules: [ reactRules, assetsRules],
+    rules: [reactRules, assetsRules],
   },
 };
