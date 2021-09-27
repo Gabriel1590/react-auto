@@ -24,15 +24,8 @@ const QUESTIONS = [
     }
 ];
 
-const CURR_DIR = process.cwd();
-
 inquirer.prompt(QUESTIONS)
-    .then(answers => {
-        const projectChoice = answers['project-choice'];
-        const projectName = answers['project-name'];
-        const templatePath = `${__dirname}/templates/${projectChoice}`;
-    
-        fs.mkdirSync(`${CURR_DIR}/${projectName}`);
-
-        utils.createDirectoryContents(templatePath, projectName);
-});
+    .then(utils.createProject)
+    .catch((err) => {
+        console.error(err)
+    });
