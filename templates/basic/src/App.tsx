@@ -1,10 +1,16 @@
+import { GlobalStyles } from '../styles/GlobalStyles';
+
 function App(): JSX.Element {
   return (
-    <div>
-      <h1>
-        Hello React
-      </h1>
-    </div>
+    <>
+      <GlobalStyles />
+
+      <div>
+        <h1>
+          Hello React
+        </h1>
+      </div>
+    </>
   );
 }
 
