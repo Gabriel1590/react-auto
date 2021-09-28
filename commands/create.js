@@ -5,7 +5,7 @@ const childProcess = require('child_process');
 const CURR_DIR = process.cwd();
 
 async function promp() {
-  const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../templates`);
+  const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../templates/apps`);
 
   const QUESTIONS = [
     {
@@ -101,5 +101,4 @@ function downloadNodeModules(destination) {
   childProcess.execSync('npm i', options);
 }
 
-console.log(Array.from(process.argv).slice(3));
 promp();
