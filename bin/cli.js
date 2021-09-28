@@ -24,6 +24,8 @@ const QUESTIONS = [
     }
 ];
 
+// const a = Array.from(process.argv).slice(2);
+// console.log(a);
 inquirer.prompt(QUESTIONS)
     .then(utils.createProject)
     .catch((err) => {
