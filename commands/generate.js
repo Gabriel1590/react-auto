@@ -18,6 +18,8 @@ async function getTypeOfSchema() {
     
   if (typeOfSchema === 'c' || typeOfSchema === 'component') {
     typeOfSchema = 'component'
+  } else if (typeOfSchema === 'rc' || typeOfSchema === 'redux-component') {
+    typeOfSchema = 'redux-component'
   } else {
     const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../templates/schemas`);
 
@@ -46,7 +48,7 @@ async function getFileData() {
         type: 'input',
         message: 'Schema location:',
         validate: function (input) {
-          if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
+          if (/^([A-Za-z\-\_\d\/])+$/.test(input)) return true;
           else return 'Schema location may only include letters, numbers, underscores and hashes.';
         }
       }
@@ -87,10 +89,25 @@ function createSchema(typeOfSchema, { location, name }) {
     const origFilePath = `${templatePath}/${file}`;
     let contents = fs.readFileSync(origFilePath, 'utf8');
 
-    contents = contents.replace(/Component/g, `${name}Component`)
     const writePath = `${writeDirPath}/${file}`;
+    contents = addNameToContent(typeOfSchema, name, contents)
     fs.writeFileSync(writePath, contents, 'utf8');
+
   });
+}
+
+function addNameToContent(typeOfSchema, name, contents) {
+  switch(typeOfSchema) {
+    case 'component': {
+      contents = contents.replace(/Component/g, `${name}Component`)
+    }
+    case 'redux-component': {
+      contents = contents.replace(/Action/g, `${name}Action`)  
+      contents = contents.replace(/Reducer/g, `${name}Reducer`)  
+      contents = contents.replace(/State/g, `${name}State`)  
+    }
+  }
+  return contents;
 }
 
 init();
