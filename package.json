@@ -1,21 +1,16 @@
 {
-  "name": "react-auto",
+  "name": "react-webpack-typescript",
   "version": "1.0.0",
   "description": "A package generator of templates with react webpack and typescript",
-  "main": "bin/cli.js",
+  "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "ra": "./bin/cli.js",
-    "rato": "./bin/cli.js",
-    "react-auto": "./bin/cli.js"
+    "react-tsc": "./bin/index.js"
   },
   "keywords": [
-    "cli",
-    "react generator",
-    "react typescript",
-    "react"
+    "cli"
   ],
   "author": "Gabriel Escorche",
   "license": "MIT",
