@@ -6,7 +6,7 @@ const CURR_DIR = process.cwd();
 async function init() {
   try {
     const typeOfSchema = await getTypeOfSchema();
-    const fileData = await getFileData();
+    const fileData = await getFileData(typeOfSchema === 'component');
     createSchema(typeOfSchema, fileData);
   } catch (error) {
     console.log(error.message || error);
@@ -39,7 +39,7 @@ async function getTypeOfSchema() {
   return typeOfSchema;
 }
 
-async function getFileData() {
+async function getFileData(uppercase = false) {
   let [location] = Array.from(process.argv).slice(4);
   if (!location) {
     const QUESTIONS = [
@@ -61,7 +61,9 @@ async function getFileData() {
   const splitedLocation = location.replace(' ', '-').split('/');
 
   let name = splitedLocation.pop();
-  name = name.charAt(0).toUpperCase() + name.slice(1);
+  if (uppercase) {
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+  }
 
   if (!/^([A-Za-z\-\_\d])+$/.test(name)) {
     throw new Error('Schema name may only include letters, numbers, underscores and hashes.');
