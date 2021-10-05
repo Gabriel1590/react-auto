@@ -36,7 +36,7 @@ async function promp() {
 function createProject(answers) {
   const projectChoice = answers['project-choice'];
   const projectName = answers['project-name'];
-  const templatePath = `${__dirname}/../templates/${projectChoice}`;
+  const templatePath = `${__dirname}/../templates/apps/${projectChoice}`;
 
   const destination = `${CURR_DIR}/${projectName}`;
   fs.mkdirSync(destination);
