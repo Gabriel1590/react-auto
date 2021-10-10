@@ -20,6 +20,8 @@ async function getTypeOfSchema() {
     typeOfSchema = 'component';
   } else if (typeOfSchema === 'rc' || typeOfSchema === 'redux-component') {
     typeOfSchema = 'redux-component';
+  } else if (typeOfSchema === 'rconf' || typeOfSchema === 'redux-config') {
+    typeOfSchema = 'redux-config';
   } else {
     const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../templates/schemas`);
 
@@ -72,7 +74,7 @@ async function getFileData(uppercase = false) {
   return { location: splitedLocation.join('/') || '.', name };
 }
 
-function createSchema(typeOfSchema, { location, name }) {
+function createSchema(typeOfSchema = 'component', { location = '.', name = '', ext = 'ts' }) {
   const writeDirPath = `${CURR_DIR}/${location}/${name}`;
   const dirExists = fs.existsSync(writeDirPath);
 
@@ -82,7 +84,7 @@ function createSchema(typeOfSchema, { location, name }) {
     throw new Error(`Error: Directory ${name} is not empty`);
   }
 
-  const templatePath = `${__dirname}/../templates/schemas/${typeOfSchema}/ts`;
+  const templatePath = `${__dirname}/../templates/schemas/${typeOfSchema}/${ext}`;
   const filesToCreate = fs.readdirSync(templatePath);
 
   filesToCreate.forEach((file) => {
@@ -93,6 +95,10 @@ function createSchema(typeOfSchema, { location, name }) {
     contents = addNameToContent(typeOfSchema, name, contents);
     fs.writeFileSync(writePath, contents, 'utf8');
   });
+
+  if (typeOfSchema === 'redux-config' && ext === 'ts') {
+    createSchema(typeOfSchema, { location: `${location}/../`, name: 'hooks', ext: 'hooks' });
+  }
 }
 
 function addNameToContent(typeOfSchema, name, contents) {
