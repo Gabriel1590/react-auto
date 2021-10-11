@@ -23,7 +23,7 @@ async function getTypeOfSchema() {
   } else if (typeOfSchema === 'rconf' || typeOfSchema === 'redux-config') {
     typeOfSchema = 'redux-config';
   } else {
-    const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../templates/schemas`);
+    const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../../templates/schemas`);
 
     const QUESTIONS = [
       {
@@ -84,7 +84,7 @@ function createSchema(typeOfSchema = 'component', { location = '.', name = '', e
     throw new Error(`Error: Directory ${name} is not empty`);
   }
 
-  const templatePath = `${__dirname}/../templates/schemas/${typeOfSchema}/${ext}`;
+  const templatePath = `${__dirname}/../../templates/schemas/${typeOfSchema}/${ext}`;
   const filesToCreate = fs.readdirSync(templatePath);
 
   filesToCreate.forEach((file) => {

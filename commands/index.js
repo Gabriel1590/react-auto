@@ -1,23 +1,26 @@
 const argvs = Array.from(process.argv).slice(1);
 const [, command, ...rest] = argvs;
 
+const COMMANDS = [
+  ['create', 'c'],
+  ['generate', 'g'],
+];
+
 function init() {
   if (rest.includes('--help')) {
-    const index = argvs.indexOf('--help');
-    if (index > -1) {
-      argvs.splice(index);
-    }
-    showComandInfo();
+    require('./help');
     return;
   }
 
-  if (command === 'c' || command === 'create') {
-    require('../commands/create');
-  } else if (command === 'g' || command === 'generate') {
-    require('../commands/generate');
-  } else {
-    showCommandsHelp();
+  for (let i = 0; i < COMMANDS.length; i++) {
+    const [commandName, commandShortName] = COMMANDS[i];
+    if (command === commandName || command === commandShortName) {
+      // eslint-disable-next-line import/no-dynamic-require
+      require(`./${commandName}`);
+      return;
+    }
   }
+  require('./help');
 }
 
 init();
