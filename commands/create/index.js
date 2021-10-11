@@ -5,7 +5,7 @@ const childProcess = require('child_process');
 const CURR_DIR = process.cwd();
 
 async function promp() {
-  const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../templates/apps`);
+  const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../../templates/apps`);
 
   const QUESTIONS = [
     {
@@ -36,7 +36,7 @@ async function promp() {
 function createProject(answers) {
   const projectChoice = answers['project-choice'];
   const projectName = answers['project-name'];
-  const templatePath = `${__dirname}/../templates/apps/${projectChoice}`;
+  const templatePath = `${__dirname}/../../templates/apps/${projectChoice}`;
 
   const destination = `${CURR_DIR}/${projectName}`;
   fs.mkdirSync(destination);
