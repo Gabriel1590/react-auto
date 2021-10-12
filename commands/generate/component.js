@@ -9,19 +9,20 @@ const CURR_DIR = process.cwd();
  * @param {string} location
  */
 function generate(name, location) {
-  createDir(`${CURR_DIR}/${location}`, name);
+  const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+
+  createDir(`${CURR_DIR}/${location}`, capitalizedName);
   const locationOfSchema = 'component/ts';
-  const locationToWrite = `${location}/${name}`;
+  const locationToWrite = `${location}/${capitalizedName}`;
   createSchema(
     locationOfSchema,
     locationToWrite,
-    (content) => customizeComponent(content, name),
+    (content) => customizeComponent(content, capitalizedName),
   );
 }
 
 function customizeComponent(content, name) {
-  const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-  return content.replace(/Component/g, `${capitalizedName}Component`);
+  return content.replace(/Component/g, `${name}Component`);
 }
 
 module.exports = { generate };
