@@ -1,13 +1,22 @@
-const fs = require('fs');
 const inquirer = require('inquirer');
 
-const CURR_DIR = process.cwd();
+const SCHEMAS = [
+  ['component', 'c'],
+  ['redux-component', 'rc'],
+  ['redux-config', 'rconf'],
+];
+
+const schemasModules = {
+  component: require('./component'),
+  'redux-component': require('./component'),
+  'redux-config': require('./component'),
+};
 
 async function init() {
   try {
     const typeOfSchema = await getTypeOfSchema();
-    const fileData = await getFileData(typeOfSchema === 'component');
-    createSchema(typeOfSchema, fileData);
+    const { name, location } = await getFileData(typeOfSchema === 'component');
+    schemasModules[typeOfSchema].generate(name, location);
   } catch (error) {
     console.log(error.message || error);
   }
@@ -15,36 +24,38 @@ async function init() {
 
 async function getTypeOfSchema() {
   let [typeOfSchema] = Array.from(process.argv).slice(3);
+  let recognizedSchema = false;
 
-  if (typeOfSchema === 'c' || typeOfSchema === 'component') {
-    typeOfSchema = 'component';
-  } else if (typeOfSchema === 'rc' || typeOfSchema === 'redux-component') {
-    typeOfSchema = 'redux-component';
-  } else if (typeOfSchema === 'rconf' || typeOfSchema === 'redux-config') {
-    typeOfSchema = 'redux-config';
-  } else {
-    const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../../templates/schemas`);
+  for (let i = 0; i < SCHEMAS.length; i++) {
+    const [schemaName, schemaShortName] = SCHEMAS[i];
+    if (typeOfSchema === schemaName || typeOfSchema === schemaShortName) {
+      typeOfSchema = schemaName;
+      recognizedSchema = true;
+      break;
+    }
+  }
 
-    const QUESTIONS = [
+  if (!recognizedSchema) {
+    const questions = [
       {
         name: 'schema-choice',
         type: 'list',
         message: 'What schema template would you like to generate?',
-        choices: TEMPLATE_CHOICES,
+        choices: SCHEMAS.map(([schemaName]) => schemaName),
       },
     ];
 
-    const answers = await inquirer.prompt(QUESTIONS);
+    const answers = await inquirer.prompt(questions);
     typeOfSchema = answers['schema-choice'];
   }
 
   return typeOfSchema;
 }
 
-async function getFileData(uppercase = false) {
+async function getFileData() {
   let [location] = Array.from(process.argv).slice(4);
   if (!location) {
-    const QUESTIONS = [
+    const questions = [
       {
         name: 'schema-location',
         type: 'input',
@@ -55,69 +66,20 @@ async function getFileData(uppercase = false) {
         },
       },
     ];
-    const answers = await inquirer.prompt(QUESTIONS);
+    const answers = await inquirer.prompt(questions);
 
     location = answers['schema-location'];
   }
 
   const splitedLocation = location.replace(' ', '-').split('/');
 
-  let name = splitedLocation.pop();
-  if (uppercase) {
-    name = name.charAt(0).toUpperCase() + name.slice(1);
-  }
+  const name = splitedLocation.pop();
 
   if (!/^([A-Za-z\-\_\d])+$/.test(name)) {
     throw new Error('Schema name may only include letters, numbers, underscores and hashes.');
   }
 
   return { location: splitedLocation.join('/') || '.', name };
-}
-
-function createSchema(typeOfSchema = 'component', { location = '.', name = '', ext = 'ts' }) {
-  const writeDirPath = `${CURR_DIR}/${location}/${name}`;
-  const dirExists = fs.existsSync(writeDirPath);
-
-  if (!dirExists) {
-    fs.mkdirSync(writeDirPath);
-  } else if (fs.readdirSync(writeDirPath)[0]) {
-    throw new Error(`Error: Directory ${name} is not empty`);
-  }
-
-  const templatePath = `${__dirname}/../../templates/schemas/${typeOfSchema}/${ext}`;
-  const filesToCreate = fs.readdirSync(templatePath);
-
-  filesToCreate.forEach((file) => {
-    const origFilePath = `${templatePath}/${file}`;
-    let contents = fs.readFileSync(origFilePath, 'utf8');
-
-    const writePath = `${writeDirPath}/${file}`;
-    contents = addNameToContent(typeOfSchema, name, contents);
-    fs.writeFileSync(writePath, contents, 'utf8');
-  });
-
-  if (typeOfSchema === 'redux-config' && ext === 'ts') {
-    createSchema(typeOfSchema, { location: `${location}/../`, name: 'hooks', ext: 'hooks' });
-  }
-}
-
-function addNameToContent(typeOfSchema, name, contents) {
-  let modifiedContent = contents;
-  switch (typeOfSchema) {
-    case 'component': {
-      modifiedContent = modifiedContent.replace(/Component/g, `${name}Component`);
-      break;
-    }
-    case 'redux-component': {
-      modifiedContent = modifiedContent.replace(/Action/g, `${name}Action`);
-      modifiedContent = modifiedContent.replace(/Reducer/g, `${name}Reducer`);
-      modifiedContent = modifiedContent.replace(/State/g, `${name}State`);
-      break;
-    }
-    default:
-      return modifiedContent;
-  }
-  return modifiedContent;
 }
 
 init();
