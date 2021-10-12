@@ -3,12 +3,14 @@ const inquirer = require('inquirer');
 const SCHEMAS = [
   ['component', 'c'],
   ['redux-component', 'rc'],
+  ['redux-slice', 'rs'],
   ['redux-config', 'rconf'],
 ];
 
 const schemasModules = {
   component: require('./component'),
   'redux-component': require('./redux-component'),
+  'redux-slice': require('./redux-slice'),
   'redux-config': require('./redux-config'),
 };
 
