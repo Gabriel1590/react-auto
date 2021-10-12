@@ -8,8 +8,8 @@ const SCHEMAS = [
 
 const schemasModules = {
   component: require('./component'),
-  'redux-component': require('./component'),
-  'redux-config': require('./component'),
+  'redux-component': require('./redux-component'),
+  'redux-config': require('./redux-config'),
 };
 
 async function init() {
