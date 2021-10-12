@@ -12,7 +12,7 @@ function generate(name, location) {
   const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
 
   createDir(`${CURR_DIR}/${location}`, capitalizedName);
-  const locationOfSchema = 'redux-component/ts';
+  const locationOfSchema = 'redux-slice/ts';
   const locationToWrite = `${location}/${capitalizedName}`;
   createSchema(
     locationOfSchema,
@@ -24,9 +24,9 @@ function generate(name, location) {
 function customizeComponent(content, name) {
   let modifiedContent = content;
 
-  modifiedContent = modifiedContent.replace(/Action/g, `${name}Action`);
-  modifiedContent = modifiedContent.replace(/Reducer/g, `${name}Reducer`);
-  modifiedContent = modifiedContent.replace(/State/g, `${name}State`);
+  modifiedContent = modifiedContent.replace(/\b(State)\b/g, `${name}State`);
+  modifiedContent = modifiedContent.replace(/\b(Slice)\b/g, `${name}Slice`);
+  modifiedContent = modifiedContent.replace(/reducer/, name);
   return modifiedContent;
 }
 
