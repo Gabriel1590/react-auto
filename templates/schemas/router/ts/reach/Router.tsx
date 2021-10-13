@@ -1,6 +1,6 @@
 import { Router as ReachRouter } from '@reach/router';
 
-export const Router = () => (
+export const AppRouter = () => (
   <ReachRouter>
     {/* DECLARAR RUTAS */}
   </ReachRouter>
