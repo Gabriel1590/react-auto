@@ -1,10 +1,7 @@
+const { COMMANDS } = require('../lib/constants');
+
 const argvs = Array.from(process.argv).slice(1);
 const [, command, ...rest] = argvs;
-
-const COMMANDS = [
-  ['create', 'c'],
-  ['generate', 'g'],
-];
 
 function init() {
   if (rest.includes('--help')) {
@@ -15,6 +12,10 @@ function init() {
   for (let i = 0; i < COMMANDS.length; i++) {
     const [commandName, commandShortName] = COMMANDS[i];
     if (command === commandName || command === commandShortName) {
+      if (commandName === 'help') {
+        require('./help');
+        return;
+      }
       // eslint-disable-next-line import/no-dynamic-require
       require(`./${commandName}`);
       return;
