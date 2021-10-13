@@ -58,8 +58,8 @@ async function getFileData() {
         type: 'input',
         message: 'Schema location:',
         validate(input) {
-          if (/^([A-Za-z\-\_\d\/])+$/.test(input)) return true;
-          return 'Schema location may only include letters, numbers, underscores and hashes.';
+          if (/^([A-Za-z\-\.\_\d\/])+$/.test(input)) return true;
+          return 'Schema location may only include letters, dots, numbers, underscores and hashes.';
         },
       },
     ];
@@ -72,8 +72,8 @@ async function getFileData() {
 
   const name = splitedLocation.pop();
 
-  if (!/^([A-Za-z\-\_\d])+$/.test(name)) {
-    throw new Error('Schema name may only include letters, numbers, underscores and hashes.');
+  if (!/^([A-Za-z\-\.\_\d])+$/.test(name)) {
+    throw new Error('Schema name may only include letters, dots, numbers, underscores and hashes.');
   }
 
   return { location: splitedLocation.join('/') || '.', name };
