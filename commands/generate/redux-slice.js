@@ -1,4 +1,8 @@
+const childProcess = require('child_process');
 const { createDir, createSchema } = require('../../lib/utils');
+
+const argvs = Array.from(process.argv).slice(1);
+const [,, ...rest] = argvs;
 
 const CURR_DIR = process.cwd();
 
@@ -19,6 +23,12 @@ function generate(name, location) {
     locationToWrite,
     (content) => customizeComponent(content, capitalizedName),
   );
+
+  if (rest.includes('--install')) {
+    console.log('Installing react-redux and @reduxjs/toolkit...');
+    const options = { cwd: locationToWrite };
+    childProcess.execSync('npm i react-redux @reduxjs/toolkit @types/react-redux', options);
+  }
 }
 
 function customizeComponent(content, name) {

@@ -1,6 +1,10 @@
+const childProcess = require('child_process');
 const { createDir, createSchema } = require('../../lib/utils');
 
 const CURR_DIR = process.cwd();
+
+const argvs = Array.from(process.argv).slice(1);
+const [,, ...rest] = argvs;
 
 /**
  * Creates Directory if needed, copy schema and paste it inside the indicated location,
@@ -24,6 +28,12 @@ function generate(name, location) {
     locationOfSchema,
     locationToWrite,
   );
+
+  if (rest.includes('--install')) {
+    console.log('Installing react-redux and @reduxjs/toolkit...');
+    const options = { cwd: locationToWrite };
+    childProcess.execSync('npm i react-redux @reduxjs/toolkit @types/react-redux', options);
+  }
 }
 
 module.exports = { generate };

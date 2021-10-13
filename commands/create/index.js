@@ -4,6 +4,8 @@ const childProcess = require('child_process');
 
 const CURR_DIR = process.cwd();
 
+const argvs = Array.from(process.argv).slice(1);
+
 async function promp() {
   const TEMPLATE_CHOICES = fs.readdirSync(`${__dirname}/../../templates/apps`);
 
@@ -43,7 +45,11 @@ function createProject(answers) {
 
   createDirectoryContents(templatePath, projectName);
   updateProjectName(projectName, destination);
-  downloadNodeModules(destination);
+
+  if (!argvs.includes('--no-install')) {
+    console.log('Installing Dependencies...');
+    downloadNodeModules(destination);
+  }
 }
 
 function createDirectoryContents(templatePath, newProjectPath) {
