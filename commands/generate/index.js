@@ -1,18 +1,13 @@
+/* eslint-disable import/no-dynamic-require */
 const inquirer = require('inquirer');
+const { SCHEMAS } = require('../../lib/constants');
 
-const SCHEMAS = [
-  ['component', 'c'],
-  ['redux-component', 'rc'],
-  ['redux-slice', 'rs'],
-  ['redux-config', 'rconf'],
-];
-
-const schemasModules = {
-  component: require('./component'),
-  'redux-component': require('./redux-component'),
-  'redux-slice': require('./redux-slice'),
-  'redux-config': require('./redux-config'),
-};
+const schemasModules = SCHEMAS
+  .reduce((modules, [name]) => {
+    // eslint-disable-next-line no-param-reassign
+    modules[name] = require(`./${name}`);
+    return modules;
+  }, {});
 
 async function init() {
   try {
