@@ -1,3 +1,5 @@
+const { COMMANDS } = require('../../lib/constants');
+
 const argvs = Array.from(process.argv).slice(1);
 const [, command, ...rest] = argvs;
 
@@ -13,31 +15,52 @@ function init() {
 
 function showCommandsHelp() {
   console.log('\nAvailable Commands:\r');
-  printCommand('[create][c]', 'Creates a new workspace and an initial React application.');
-  printCommand('[generate][g]', 'Generates and/or modifies files based on a schematic.');
-  // printCommand('[version][v]', 'Outputs React Auto version.');
-  printCommand('[help]', 'Lists available commands and their short descriptions.');
+  for (let i = 0; i < COMMANDS.length; i++) {
+    const [name, shortName, description] = COMMANDS[i];
+    printCommand(`[${name}][${shortName}]`, description);
+  }
 }
 
 function showComandInfo() {
-  if (command === 'c' || command === 'create') {
-    console.log(argvs.join(' '));
-  } else if (command === 'g' || command === 'generate') {
-    if (argvs.length < 3) {
-      console.log(argvs.join(' '), '<schematic> <name>');
+  let findedCommand = false;
+  for (let i = 0; i < COMMANDS.length; i++) {
+    const [name, shortName,, argumentList] = COMMANDS[i];
 
-      console.log('\nArguments');
-      printCommand('[schematic]', 'The schematic or collection: schematic to generate');
-      printCommand('[name]', 'The name of the schematic');
+    if (command === name || command === shortName) {
+      findedCommand = name !== 'help';
+      let parsedArguments = '';
 
-      console.log('\nAvailable Schematics');
-      printCommand('[component][c]', 'A Functional Component with its styles with styled-components');
-      printCommand('[redux-component][rc]', 'A reducer, actions and types file.');
-    } else if (argvs.length < 4) {
-      console.log(argvs.join(' '), '<name>');
-      printCommand('[name]', 'The name of the schematic');
+      for (let j = 0; j < argumentList.length; j++) {
+        const argument = argumentList[j];
+        parsedArguments += `<${argument.name}> `;
+      }
+
+      console.log(argvs.join(' '), parsedArguments);
+
+      if (argumentList.length) {
+        console.log('\nArguments');
+      }
+
+      for (let j = 0; j < argumentList.length; j++) {
+        const argument = argumentList[j];
+        printCommand(`[${argument.name}]`, argument.description);
+      }
+
+      for (let j = 0; j < argumentList.length; j++) {
+        const argument = argumentList[j];
+        if (argument.available.length) {
+          console.log(`\nAvailable ${argument.name}`);
+
+          for (let k = 0; k < argument.available.length; k++) {
+            const [availableName, availableShortName, availableDescription] = argument.available[k];
+            printCommand(`[${availableName}][${availableShortName}]`, availableDescription);
+          }
+        }
+      }
     }
-  } else {
+  }
+
+  if (!findedCommand) {
     showCommandsHelp();
   }
 }
