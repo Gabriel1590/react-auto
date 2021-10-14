@@ -1,40 +1,125 @@
-# React Typescript
-*Currently under Development*
+# React Auto Generator
+*Version Beta*
 
-> A React Typescript CLI generator.
+> A React App CLI generator.
 
-<!-- ![screenshot](./src/assets/petgram.png) -->
+Create a new project in react with a simple command. Select wich template you like and get started and which features would you like it to have.
 
-Create a project in react with typescript with a simple command. Select wich template you like and get started.
-
-## Built With
+## 🛠️ Built With
 
 - Javascript, Typescript
 - React, Node
 
-<!-- ## Getting Started
+## 📥 Installation
 
-To get a local copy up and running follow these simple example steps.
+You can use npx or install it globally
 
-### Prerequisites
-Node v14.16.0
+```
+$ npm install -g react-auto-generator
+```
 
-### Setup
-`git clone https://github.com/Gabriel1590/petgram.git`.
+## ⚡ Quick Start
 
-`cd petgram`.
+Start by creating a full react app project with
+```
+$ rag create
+```
 
-### Install
-`npm install`
+Add schematics to your project, such as functional components, redux or routers with
+```
+$ rag generate
+```
 
-### Usage
-Para correr en un ambiente de desarrollo: 
-`npm run dev`
+Or just create your project with those features configurated already with --use-redux or --use-reach-router
+```
+$ rag create --use-redux
+or 
+$ rag create --use-reach-router
+or
+$ rag create --use-redux --use-reach-router
+```
 
-Para correr en un servidor:
-`npm run serve`
-### Run tests
-`npm run test` -->
+## 📣 Commands
+
+### *Create, c*
+Creates a new React App project, based on templates.
+
+```
+$ rag create <template> <name> <flags>
+```
+
+### *Generate, g*
+Generates and/or modifies files based on a schematic.
+```
+$ rag generate <schematic> <name> <flags>
+```
+
+### *Help, h*
+Lists available commands and their short descriptions.
+```
+$ rag help
+```
+## 🗂️ Templates
+
+### *Basic*
+A starter React App with Typescript
+```
+$ rag create basic <name> <flags>
+```
+## 📑 Schematics
+
+### *Component, c*
+A Functional Component with its styles using styled-components.
+```
+$ rag generate component <name> <flags>
+```
+
+### *Reach-router, rr*
+A Functional Component with a @Reach/Router Router wrapper.
+```
+$ rag generate reach-router <name> <flags>
+```
+### *Redux-component, rc*
+A reducer, actions and types file.
+```
+$ rag generate redux-component <name> <flags>
+```
+### *Redux-slice, rs*
+A @reduxjs/toolkit slice file to insert in the rootReducer.
+```
+$ rag generate redux-slice <name> <flags>
+```
+### *Redux-config, rconf*
+A Redux store, rootReducer and personalized hooks, using @reduxjs/toolkit
+```
+$ rag generate redux-config <name> <flags>
+```
+
+## 🎌 Option Flags
+
+### *--use-redux*
+Initialize project with a redux starter configuration.
+```
+$ rag create <schematic> <name> --use-redux
+```
+
+### *--use-reach-router*
+Initialize project with a @reach/router starter configuration.
+```
+$ rag create <schematic> <name> --use-reach-router
+```
+
+### *--help*
+Lists Available Templates, Schematics, flags, or information about the params needed.
+```
+$ rag create <schematic> <name> --help
+```
+
+### *--install*
+Installs Schematics extra dependencies.
+```
+$ rag generate <schematic> <name> --install
+```
 
 ## Authors
 
