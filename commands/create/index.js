@@ -46,9 +46,19 @@ function createProject(answers) {
   createDirectoryContents(templatePath, projectName);
   updateProjectName(projectName, destination);
 
-  if (!argvs.includes('--no-install')) {
+  const installDeps = !argvs.includes('--no-install');
+
+  if (installDeps) {
     console.log('Installing Dependencies...');
     downloadNodeModules(destination);
+  }
+
+  if (argvs.includes('--use-redux')) {
+    require('../generate/redux-config').generate('.', `${projectName}/src`, installDeps, true);
+  }
+
+  if (argvs.includes('--use-reach-router')) {
+    require('../generate/reach-router').generate('.', `${projectName}/src`, installDeps, true);
   }
 }
 

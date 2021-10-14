@@ -10,6 +10,9 @@ const devConfig = {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    historyApiFallback: {
+      disableDotRule: true
+    },
     hot: true,
   },
   target: 'web',
