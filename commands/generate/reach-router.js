@@ -1,3 +1,4 @@
+const fs = require('fs');
 const childProcess = require('child_process');
 const { createSchema } = require('../../lib/utils');
 
@@ -10,9 +11,10 @@ const [,, ...rest] = argvs;
  * @param {string} name
  * @param {string} location
  * @param {boolean} installDeps
+ * @param {boolean} fromUse
  */
-function generate(name, location, installDeps = false) {
-  const locationOfSchema = 'router/ts/reach';
+function generate(name, location, installDeps = false, fromUse = false) {
+  let locationOfSchema = 'router/ts/reach';
   const locationToWrite = `${location}/${name}`;
   createSchema(
     locationOfSchema,
@@ -24,6 +26,15 @@ function generate(name, location, installDeps = false) {
     const options = { cwd: locationToWrite };
     childProcess.execSync('npm i @reach/router', options);
     childProcess.execSync('npm install @types/reach__router --save-dev', options);
+  }
+
+  if (fromUse) {
+    fs.rmSync(`${locationToWrite}/App.tsx`);
+    locationOfSchema = 'router/use/reach';
+    createSchema(
+      locationOfSchema,
+      locationToWrite,
+    );
   }
 }
 
