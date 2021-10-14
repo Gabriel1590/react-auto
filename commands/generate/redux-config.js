@@ -1,4 +1,5 @@
 const childProcess = require('child_process');
+const fs = require('fs');
 const { createDir, createSchema } = require('../../lib/utils');
 
 const CURR_DIR = process.cwd();
@@ -12,9 +13,12 @@ const [,, ...rest] = argvs;
  * @param {string} name
  * @param {string} location
  * @param {boolean} installDeps
+ * @param {boolean} fromUse
  */
-function generate(name, location, installDeps = false) {
-  createDir(`${CURR_DIR}/${location}/${name}`, 'redux');
+function generate(name, location, installDeps = false, fromUse = false) {
+  const baseDir = `${CURR_DIR}/${location}/${name}`;
+
+  createDir(baseDir, 'redux');
   let locationOfSchema = 'redux-config/ts';
   let locationToWrite = `${location}/${name}/redux`;
   createSchema(
@@ -22,7 +26,7 @@ function generate(name, location, installDeps = false) {
     locationToWrite,
   );
 
-  createDir(`${CURR_DIR}/${location}/${name}`, 'hooks');
+  createDir(baseDir, 'hooks');
   locationOfSchema = 'redux-config/hooks';
   locationToWrite = `${location}/${name}/hooks`;
   createSchema(
@@ -35,6 +39,16 @@ function generate(name, location, installDeps = false) {
     const options = { cwd: locationToWrite };
     childProcess.execSync('npm i react-redux @reduxjs/toolkit', options);
     childProcess.execSync('npm i @types/react-redux --save-dev', options);
+  }
+
+  if (fromUse) {
+    fs.rmSync(`${baseDir}/index.tsx`);
+    locationOfSchema = 'redux-config/use';
+    locationToWrite = `${location}/${name}`;
+    createSchema(
+      locationOfSchema,
+      locationToWrite,
+    );
   }
 }
 
