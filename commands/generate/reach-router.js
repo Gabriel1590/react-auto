@@ -9,8 +9,9 @@ const [,, ...rest] = argvs;
  * under the given name
  * @param {string} name
  * @param {string} location
+ * @param {boolean} installDeps
  */
-function generate(name, location) {
+function generate(name, location, installDeps = false) {
   const locationOfSchema = 'router/ts/reach';
   const locationToWrite = `${location}/${name}`;
   createSchema(
@@ -18,10 +19,11 @@ function generate(name, location) {
     locationToWrite,
   );
 
-  if (rest.includes('--install')) {
+  if (installDeps || rest.includes('--install')) {
     console.log('Installing @reach/router...');
     const options = { cwd: locationToWrite };
     childProcess.execSync('npm i @reach/router', options);
+    childProcess.execSync('npm install @types/reach__router --save-dev', options);
   }
 }
 

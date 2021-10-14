@@ -11,8 +11,9 @@ const [,, ...rest] = argvs;
  * under the given name
  * @param {string} name
  * @param {string} location
+ * @param {boolean} installDeps
  */
-function generate(name, location) {
+function generate(name, location, installDeps = false) {
   createDir(`${CURR_DIR}/${location}/${name}`, 'redux');
   let locationOfSchema = 'redux-config/ts';
   let locationToWrite = `${location}/${name}/redux`;
@@ -29,10 +30,11 @@ function generate(name, location) {
     locationToWrite,
   );
 
-  if (rest.includes('--install')) {
+  if (installDeps || rest.includes('--install')) {
     console.log('Installing react-redux and @reduxjs/toolkit...');
     const options = { cwd: locationToWrite };
-    childProcess.execSync('npm i react-redux @reduxjs/toolkit @types/react-redux', options);
+    childProcess.execSync('npm i react-redux @reduxjs/toolkit', options);
+    childProcess.execSync('npm i @types/react-redux --save-dev', options);
   }
 }
 

@@ -50,6 +50,14 @@ function createProject(answers) {
     console.log('Installing Dependencies...');
     downloadNodeModules(destination);
   }
+
+  if (argvs.includes('--use-redux')) {
+    require('../generate/redux-config').generate('.', `${projectName}/src`, true);
+  }
+
+  if (argvs.includes('--use-reach-router')) {
+    require('../generate/reach-router').generate('.', `${projectName}/src`, true);
+  }
 }
 
 function createDirectoryContents(templatePath, newProjectPath) {
