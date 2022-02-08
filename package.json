@@ -1,20 +1,26 @@
 {
-  "name": "react-auto",
+  "name": "react-auto-generator",
   "version": "1.0.0",
   "description": "A package generator of templates with react webpack and typescript",
   "main": "bin/cli.js",
+  "repository": "https://github.com/Gabriel1590/react-auto-generator",
+  "homepage": "https://github.com/Gabriel1590/react-auto-generator",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "ra": "./bin/cli.js",
-    "rato": "./bin/cli.js",
-    "react-auto": "./bin/cli.js"
+    "rag": "./bin/cli.js",
+    "react-auto-generator": "./bin/cli.js"
   },
   "keywords": [
     "cli",
-    "react generator",
-    "react typescript",
+    "generator",
+    "react-generator",
+    "react-auto",
+    "react-auto-generator",
+    "react-typescript",
+    "react-templates",
+    "templates",
     "react"
   ],
   "author": "Gabriel Escorche",
